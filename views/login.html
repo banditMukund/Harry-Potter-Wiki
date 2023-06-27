@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Login Page with Background Image Example</title>
+		<link rel="stylesheet" href="/static/style.css">
+	</head>
+	<body>
+		<div id="bg"></div>
+		<form id="loginform" method="POST" onsubmit="return false;">
+			<div class="form-field">
+				<input type="email" placeholder="Email" required name="email"/>
+			</div>
+			<div class="form-field">
+				<input type="password" placeholder="Password" required name="password"/> </div>
+			<div class="form-field">
+				<button class="btn" id="loginbtn" type="submit">Log in</button>
+			</div>
+		</form>	
+
+		<script>
+			document.getElementById("loginbtn").addEventListener("click", async function() {
+				let email = document.getElementById("loginform").elements[0].value;
+				let password = document.getElementById("loginform").elements[1].value;
+
+				let data = {'email':email, 'password':password}
+
+				const response = await fetch("/login", {
+			     	method: "POST",
+			      	headers: {
+			        	"Content-Type": "application/json",
+			      	},
+			      	body: JSON.stringify(data),
+			    });
+
+				const result = await response.json();
+				console.log(result.message);
+				alert(result.message);
+				if(result.message == "You are not admin")
+					window.location.href = "/homepage";
+			})
+		</script>
+
+	</body>	
+</html>

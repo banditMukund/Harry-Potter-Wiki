@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <title> Harry Potter Wiki </title>
+	    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
+	    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css'>
+	    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css'>
+	    
+	      <!-- Mega navbar CSS -->
+	      <link rel="stylesheet" href="/static/homepage.css">
+	      
+		<!-- Demo CSS -->
+		<!-- <link rel="stylesheet" href="/static/demo.css"> -->
+	  
+  	</head>
+  	<body>
+      
+      
+      <!-- partial:index.partial.html -->
+	<nav class="navbar" role="navigation">
+
+    <!-- Brand and toggle get grouped for better mobile display -->
+    	<div class="navbar-header">
+      		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+				<span class="toggle-menu ">MENU</span>
+      		</button>
+    <!--  <a class="navbar-brand" href="#">Home</a> -->
+    	</div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    	<div class="collapse navbar-collapse" id="navbar-collapse-1">
+      		<ul class="nav navbar-nav">
+        		<li><a href="#">Home page</a></li>
+				<!-- <li  class="dropdown mega-dropdown"><a href="#" class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown">Products <span class="caret"></span> </a>
+
+					<ul class="dropdown-menu mega-dropdown-menu row">
+						<li class="col-sm-3">
+	    					<a class="title-submenu" href="#">For womans <span class="caret"></span> </a> 
+							<ul>
+								<li> <a href="#">Jackets</a></li>
+								<li> <a href="#">Shoes</a></li>
+								<li> <a href="#">Lorem ipsum</a></li>
+								<li> <a href="#">Something</a></li>
+								<li> <a href="#">Good shirts</a></li>
+							</ul>
+						</li>
+						<li class="col-sm-3"><a href="#">For men<span class="caret"></span></a> 
+							<ul>
+								<li> <a href="#">Trousers</a></li>
+								<li> <a href="#">Jackets</a></li>
+								<li> <a href="#">Shirts </a></li>
+								<li> <a href="#">Kardiagni</a></li>
+								<li> <a href="#">Product name</a></li>
+							</ul>
+						</li>
+					</ul>
+				</li> -->
+
+				<li><a href="https://harrypotter.fandom.com/wiki/Hogwarts_School_of_Witchcraft_and_Wizardry">Hogwarts</a></li>
+				<li class="dropdown"><a href="html-about.html" class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown">Houses</a>
+					<ul class="dropdown-menu">
+						<li><a href="https://pottermore.fandom.com/wiki/Gryffindor">Gryffindor</a></li>
+						<li><a href="https://pottermore.fandom.com/wiki/Slytherin">Slytherin</a></li>
+						<li><a href="https://pottermore.fandom.com/wiki/Ravenclaw">Ravenclaw</a></li>
+						<li><a href="https://pottermore.fandom.com/wiki/Hupplepuf">Hupplepuf</a></li>
+					</ul>
+				</li>
+			</ul>
+	  
+			<form method="GET" class="searchform navbar-form" onsubmit="return false;">
+				<input type="hidden" value="search" name="view">
+				<div class="input-group">
+					<input type="text"  name="searchword" id="searchtext" required class="form-control" placeholder="Search any character" name="q">
+					<div class="input-group-btn">
+						<button class="btn" id="searchbtn" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+					</div>
+				</div>
+		    </form>
+
+		    
+		
+     	</div><!-- /.navbar-collapse -->
+	</nav>
+
+<!-- partial -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js'></script>
+<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'></script>
+<script src='https://cameronspear.com/downloads/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js'></script>
+<script  src="/static/script.js"></script>
+      
+      
+      
+      
+      
+ <header class="intro">
+ <h1> Harry Potter</h1>
+ <p>Harry Potter is a series of seven fantasy novels written by British author J. K. Rowling. The novels chronicle the lives of a young wizard, Harry Potter, and his friends Hermione Granger and Ron Weasley, all of whom are students at Hogwarts School of Witchcraft and Wizardry. The main story arc concerns Harry's conflict with Lord Voldemort, a dark wizard who intends to become immortal, overthrow the wizard governing body known as the Ministry of Magic and subjugate all wizards and Muggles (non-magical people).</p>
+
+<p>The series was originally published in English by Bloomsbury in the United Kingdom and Scholastic Press in the United States. All versions around the world are printed by Grafica Veneta in Italy. A series of many genres, including fantasy, drama, coming-of-age fiction, and the British school story (which includes elements of mystery, thriller, adventure, horror, and romance), the world of Harry Potter explores numerous themes and includes many cultural meanings and references. According to Rowling, the main theme is death. Other major themes in the series include prejudice, corruption, and madness.</p>
+
+ <div class="action">
+ <a href="https://harrypotter.fandom.com/wiki/Hogsmeade" class="btn">Happy visit to Hogsmeade</a>
+ </div>
+ <br>
+ <div class="action">
+ <button class="btn" id="allchars">List of all the characters</button>
+ </div>
+ <br>
+ <div id="allcharsresult">
+ </div>
+ <br><br>
+
+ <script>
+ 	console.log("allchars button");
+ 	let endpoint1 = 'https://hp-api.onrender.com/api/characters';
+
+	document.getElementById("allchars").addEventListener("click", async function() {
+		let data = {'endpoint': endpoint1}
+
+		const response = await fetch("/api/getAllChars", {
+	     	method: "POST",
+	      	headers: {
+	        	"Content-Type": "application/json",
+	      	},
+	      	body: JSON.stringify(data),
+	    });
+
+	    // const result = await response.json();
+	    // if(result.message == 'Found')
+	    // {
+	    // 	console.log(result.chdata);
+	    // }
+    })
+ </script>
+
+<!-- <div class="search-results">
+	<p>Name: <span class="ch-detail" id="ch-name">Harry Potter</span></p>
+	<p>House: <span class="ch-detail" id="ch-house">Gryffindor</span></p>
+	<p>Ancestry: <span class="ch-detail" id="ch-ancestry">Half-blood</span></p>
+	<p>Eye color: <span class="ch-detail" id="ch-eyecolor">Green</span></p>
+	<p>Hair color: <span class="ch-detail" id="ch-haircolor">Black</span></p>
+	<p>Wand: <span class="ch-detail" id="ch-wand">Holly, Phoenix feather, 11</span></p>
+	<p>Patronus: <span class="ch-detail" id="ch-patronus">Stag</span></p>
+	<p>Actor: <span class="ch-detail" id="ch-actor">Daniel Radcliffe</span></p>
+</div> -->
+
+<div class="search-results">
+	<table>
+		<tr><td>Name:</td> <td class="ch-detail" id="ch-name">Harry Potter</td></tr>
+		<tr><td>House:</td> <td class="ch-detail" id="ch-house">Gryffindor</td></tr>
+		<tr><td>Ancestry:</td> <td class="ch-detail" id="ch-ancestry">Half-blood</td></tr>
+		<tr><td>Eye color:</td> <td class="ch-detail" id="ch-eyecolor">Green</td></tr>
+		<tr><td>Hair color:</td> <td class="ch-detail" id="ch-haircolor">Black</td></tr>
+		<tr><td>Wand:</td> <td class="ch-detail" id="ch-wand">Holly, Phoenix feather, 11</td></tr>
+		<tr><td>Patronus:</td> <td class="ch-detail" id="ch-patronus">Stag</td></tr>
+		<tr><td>Actor:</td> <td class="ch-detail" id="ch-actor">Daniel Radcliffe</td></tr>
+	</table>
+</div>
+
+<script>
+
+	let endpoint = 'https://hp-api.onrender.com/api/characters';
+
+	document.getElementById("searchbtn").addEventListener("click", async function() {
+		console.log("In the search script")
+		let searchtext = document.getElementById("searchtext").value;
+		let data = {'chname':searchtext, 'endpoint': endpoint}
+
+		const response = await fetch("/api/getCharacterDetails", {
+	     	method: "POST",
+	      	headers: {
+	        	"Content-Type": "application/json",
+	      	},
+	      	body: JSON.stringify(data),
+	    });
+
+	    const myresult = await response.json();
+	    console.log("result="+myresult)
+	    if(myresult.message == 'Found')
+	    {
+	    	console.log(myresult.message)
+	    	for (let x in myresult)
+	    	{
+	    		console.log("element= "+myresult[x])
+	    	}
+	    	console.log(JSON.stringify(myresult.data))
+	    	console.log(myresult.data.name)
+	    	document.getElementById('ch-name').innerHTML = myresult.data.name;
+	    	document.getElementById('ch-house').innerHTML = myresult.data.house;
+	    	document.getElementById('ch-ancestry').innerHTML = myresult.data.ancestry;
+	    	document.getElementById('ch-eyecolor').innerHTML = myresult.data.eyeColour;
+	    	document.getElementById('ch-haircolor').innerHTML = myresult.data.hairColour;
+	    	document.getElementById('ch-wand').innerHTML = JSON.stringify(myresult.data.wand);
+	    	document.getElementById('ch-patronus').innerHTML = myresult.data.patronus;
+	    	document.getElementById('ch-actor').innerHTML = myresult.data.actor;
+	    }
+
+    })
+</script>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  
+ Author: banditMukund
+  
+  <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  
+  </body>
+</html>

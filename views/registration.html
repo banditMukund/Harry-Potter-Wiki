@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Login Page with Background Image Example</title>
+		<link rel="stylesheet" href="/static/style.css">
+	</head>
+	<body>
+		<div id="bg"></div>
+		<form id="registerform" method="POST" onsubmit="return false;">
+			<div class="form-field">
+				<input type="email" placeholder="Email" required name="email"/>
+			</div>
+			<div class="form-field">
+				<input type="text" placeholder="NickName" required name="username"/>
+			</div>
+			<div class="form-field">
+				<input type="password" placeholder="Password" required name="password"/> </div>
+			<div class="form-field">
+				<button class="btn" type="submit" id="registerbtn">Log in</button>
+			</div>
+		</form>	
+
+		<script>
+			document.getElementById("registerbtn").addEventListener("click", async function() {
+				let email = document.getElementById("registerform").elements[0].value;
+				let username = document.getElementById("registerform").elements[1].value;
+				let password = document.getElementById("registerform").elements[2].value;
+
+				let data = {'email':email, 'username':username, 'password':password}
+
+				const response = await fetch("/register", {
+			     	method: "POST",
+			      	headers: {
+			        	"Content-Type": "application/json",
+			      	},
+			      	body: JSON.stringify(data),
+			    });
+
+				const result = await response.json();
+				console.log(result.message);
+				alert(result.message);
+				if(result.message == "Successfully registered")
+					window.location.href = "/login";
+			})
+		</script>
+
+	</body>	
+</html>
