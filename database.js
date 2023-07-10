@@ -58,7 +58,7 @@ class Database {
         console.log("In is Admin")
         return new Promise(async (resolve, reject) => {
             try {
-                let smt = await this.db.prepare('SELECT username FROM users WHERE email = ? and password = ?');
+                let smt = await this.db.prepare('SELECT * FROM users WHERE email = ? and password = ?');
                 let row = await smt.get(email, pass);
                 resolve(row !== undefined ? row.email == 'admin' : false);
             } catch(e) {

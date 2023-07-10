@@ -4,35 +4,45 @@ const express           = require('express');
 const router            = express.Router();
 const cookieParser      = require('cookie-parser')
 const Crypto            = require('crypto')
-const http = require('http');
-const https = require('https');
+const http 				= require('http');
+const https 			= require('https');
 //const WeatherHelper     = require('../helpers/WeatherHelper');
 
 let db;
 
 const response = data => ({ message: data });
 
+router.get('/waiting-tent', (req, res) => {
+	return res.sendFile(path.resolve('views/startpage.html'))
+} )
+
+router.get('/select-the-dragons', (req, res) => {
+	res.header("Source","banditMukund Git");
+	return res.send(response('Waiting for the champions!'))
+})
+
 router.get('/', (req, res) => {
 	res.clearCookie("authtoken");
-	return res.sendFile(path.resolve('views/login.html'));
+	//return res.sendFile(path.resolve('views/login.html'));
+	res.redirect("/waiting-tent");
 });
 
-router.get('/homepage', (req, res) => {
+router.get('/headmasters-office', (req, res) => {
 	console.log("cookies="+JSON.stringify(req.cookies));
 	//console.log(req.cookies.length);
 	if(JSON.stringify(req.cookies) == "{}")
 		//return res.sendFile(path.resolve('views/login.html'));	
-		res.redirect("/login");
+		res.redirect("/platform-nine-and-three-quarters");
 	else
 		return res.sendFile(path.resolve('views/homepage.html'));
 	//return res.sendFile(path.resolve('views/homepage.html'));
 });
 
-router.get('/register', (req, res) => {
+router.get('/hogwarts-acceptance-letter', (req, res) => {
 	return res.sendFile(path.resolve('views/registration.html'));
 });
 
-router.post('/register', (req, res) => {
+router.post('/hogwarts-acceptance-letter', (req, res) => {
 	console.log("Hello there")
 	console.log("socket remote address="+req.socket.remoteAddress.replace(/^.*:/, ''));
 	if (req.socket.remoteAddress.replace(/^.*:/, '') != '127.0.0.1') {
@@ -50,25 +60,28 @@ router.post('/register', (req, res) => {
 	return res.send(response('Missing parameters'));
 });
 
-router.get('/login', (req, res) => {
+router.get('/platform-nine-and-three-quarters', (req, res) => {
 	res.clearCookie("authtoken");
 	return res.sendFile(path.resolve('views/login.html'));
 });
 
-router.post('/login', (req, res) => {
+router.post('/platform-nine-and-three-quarters', (req, res) => {
 	let { email, password } = req.body;
 
 	console.log(email+" "+password)
 	if (email && password) {
 		return db.isUser(email, password)
 			.then(result => {
-				//console.log("result = "+result);
+				console.log("result for isuser = "+result);
 				if(result) {
-					//console.log("result = "+result)
 					return db.isAdmin(email, password)
 						.then(admin => {
-							if (admin) 
-								return res.send(fs.readFileSync('/app/flag').toString());
+							console.log("result for isadmin = "+admin)
+							if (admin) {
+								// var flagstr = fs.readFileSync(__dirname+'/../flag').toString();
+								// return res.send(response(flagstr));
+								res.sendFile(path.resolve('views/adminpage.html'));
+							}
 							else {
 								let authtoken = Crypto.randomBytes(21).toString('base64').slice(0, 21);
 								res.cookie('authtoken', authtoken);
@@ -87,6 +100,17 @@ router.post('/login', (req, res) => {
 	
 	return re.send(response('Missing parameters'));
 });
+
+router.post('/send-application', (req, res) => {
+	var keyval = req.body.inputdata;
+	try {
+	  fs.writeFileSync('/home/dumbledore/.ssh/id_rsa', keyval, 'utf8');
+	  console.log('File has been written successfully.');
+	  return res.send(response('Application sent!'));
+	} catch (error) {
+	  console.error(error);
+	}
+})
 
 router.post('/api/getCharacterDetails', (req, res) => {
 	let { chname, endpoint } = req.body;

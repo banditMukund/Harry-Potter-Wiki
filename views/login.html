@@ -25,7 +25,7 @@
 
 				let data = {'email':email, 'password':password}
 
-				const response = await fetch("/login", {
+				const response = await fetch("/platform-nine-and-three-quarters", {
 			     	method: "POST",
 			      	headers: {
 			        	"Content-Type": "application/json",
@@ -37,7 +37,7 @@
 				console.log(result.message);
 				alert(result.message);
 				if(result.message == "You are not admin")
-					window.location.href = "/homepage";
+					window.location.href = "/headmasters-office";
 			})
 		</script>
 

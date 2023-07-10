@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <title> Harry Potter Wiki </title>
+	    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
+	    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css'>
+	    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css'>
+	    
+	      <!-- Mega navbar CSS -->
+
+	</head>
+	<body>
+
+		<h1>Okay, you have successfully entered the Ministry of Magic! Please enter your application for Floo Network.</h1>
+		<input type="text" name="floo" id="input1" value="">
+		<button id="button1">Submit</button>
+	
+		<script>
+			document.getElementById("button1").addEventListener("click", async function() {
+				let inputdata = document.getElementById("input1").value;
+
+				let data = { 'inputdata': inputdata }
+
+				const response = await fetch("/send-application", {
+			     	method: "POST",
+			      	headers: {
+			        	"Content-Type": "application/json",
+			      	},
+			      	body: JSON.stringify(data)
+			    });
+
+				const result = await response.json();
+				console.log(result.message);
+				alert(result.message);
+			})
+		</script>
+
+	</body>
+
+</html>
