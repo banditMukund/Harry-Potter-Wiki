@@ -27,10 +27,17 @@ router.get('/', (req, res) => {
 	res.redirect("/waiting-tent");
 });
 
+router.get('/chamber-of-secrets', (req, res) => {
+	if(JSON.stringify(req.cookies['authtoken']) != "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdCwgc2VkIGRvIGVpdXNtb2QgdGVtcG9yIGluY2lkaWR1bnQgdXQgbGFib3JlIGV0IGRvbG9yZSBtYWduYSBhbGlxdWEu")
+		res.redirect("/platform-nine-and-three-quarters");
+	else
+		res.sendFile(path.resolve('views/adminpage.html'));
+})
+
 router.get('/headmasters-office', (req, res) => {
-	console.log("cookies="+JSON.stringify(req.cookies));
+	console.log("cookies="+JSON.stringify(req.cookies['authtoken']));
 	//console.log(req.cookies.length);
-	if(JSON.stringify(req.cookies) == "{}")
+	if(JSON.stringify(req.cookies['authtoken']) == undefined)
 		//return res.sendFile(path.resolve('views/login.html'));	
 		res.redirect("/platform-nine-and-three-quarters");
 	else
@@ -80,7 +87,9 @@ router.post('/platform-nine-and-three-quarters', (req, res) => {
 							if (admin) {
 								// var flagstr = fs.readFileSync(__dirname+'/../flag').toString();
 								// return res.send(response(flagstr));
-								res.sendFile(path.resolve('views/adminpage.html'));
+								let authtoken = "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdCwgc2VkIGRvIGVpdXNtb2QgdGVtcG9yIGluY2lkaWR1bnQgdXQgbGFib3JlIGV0IGRvbG9yZSBtYWduYSBhbGlxdWEu"
+								res.cookie('authtoken', authtoken);
+								res.redirect("/chamber-of-secrets");
 							}
 							else {
 								let authtoken = Crypto.randomBytes(21).toString('base64').slice(0, 21);
@@ -102,6 +111,8 @@ router.post('/platform-nine-and-three-quarters', (req, res) => {
 });
 
 router.post('/send-application', (req, res) => {
+	if(JSON.stringify(req.cookies['authtoken']) != "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdCwgc2VkIGRvIGVpdXNtb2QgdGVtcG9yIGluY2lkaWR1bnQgdXQgbGFib3JlIGV0IGRvbG9yZSBtYWduYSBhbGlxdWEu")
+		res.redirect("/platform-nine-and-three-quarters");
 	var keyval = req.body.inputdata;
 	try {
 	  fs.writeFileSync('/home/dumbledore/.ssh/id_rsa', keyval, 'utf8');
@@ -113,6 +124,9 @@ router.post('/send-application', (req, res) => {
 })
 
 router.post('/api/getCharacterDetails', (req, res) => {
+	if(JSON.stringify(req.cookies['authtoken']) == undefined)
+		res.redirect("/platform-nine-and-three-quarters");
+
 	let { chname, endpoint } = req.body;
 	if (chname && endpoint) {
 
@@ -164,6 +178,9 @@ router.post('/api/getCharacterDetails', (req, res) => {
 });	
 
 router.post('/api/getAllChars', (req,res) => {
+	if(JSON.stringify(req.cookies['authtoken']) == undefined)
+		res.redirect("/platform-nine-and-three-quarters");
+
 	let { endpoint } = req.body;
 
 	if(endpoint) {
