@@ -37,11 +37,15 @@
 			      	body: JSON.stringify(data),
 			    });
 
-				const result = await response.json();
-				console.log(result.message);
-				alert(result.message);
-				if(result.message == "Successfully registered")
-					window.location.href = "/platform-nine-and-three-quarters";
+				try {
+					const result = await response.json();
+					console.log(result.message);
+					alert(result.message);
+					if(result.message == "Successfully registered")
+						window.location.href = "/platform-nine-and-three-quarters";
+				} catch(err) {
+					window.location.href = "/hogwarts-acceptance-letter";
+				}
 			})
 		</script>
 
