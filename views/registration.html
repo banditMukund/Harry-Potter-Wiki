@@ -29,12 +29,14 @@
 
 				let data = {'email':email, 'username':username, 'password':password}
 
+				const body = new URLSearchParams(data).toString();
+
 				const response = await fetch("/hogwarts-acceptance-letter", {
 			     	method: "POST",
 			      	headers: {
-			        	"Content-Type": "application/json",
+			        	"Content-Type": "application/x-www-form-urlencoded",
 			      	},
-			      	body: JSON.stringify(data),
+			      	body: body,
 			    });
 
 				try {

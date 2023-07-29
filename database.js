@@ -1,6 +1,7 @@
 const sqlite = require('sqlite-async');
 const crypto = require('crypto');
 const https = require('https');
+const http = require('http');
 
 class Database {
     constructor(db_file) {
@@ -67,16 +68,19 @@ class Database {
         });
     }
 
-    async getCharacterData(chname, endpoint) {
+    async getCharacterData(endpoint, chname) {
         console.log("Character data in database");
         return new Promise(async (resolve, reject) => {
             try {
-                const req = await https.get(endpoint, res => {
+                console.log("endpoint="+endpoint);
+                const protocol = endpoint.startsWith('http://') ? http : https;
+                const req = await protocol.get(endpoint, res => {
                     let body = '';
                     res.on('data', chunk => body+=chunk);
                     res.on('end', () => {
                         let jsondata = JSON.parse(body)
                         let theres = ''
+                        //console.log("jsondata="+jsondata);
                         for (let x in jsondata)
                         {
                             if(jsondata[x].name.indexOf(chname) != -1)
@@ -87,17 +91,10 @@ class Database {
                                 break;
                             }
                         }
-                        //console.log("theres="+theres.name)
                         resolve(false);
-                        // if(theres='')
-                        //     resolve(false)
-                        // else
-                        // {
-                        //     console.log("else condition theres="+theres.name)
-                        //     resolve(theres)
-                        // }
                     })
                 })
+
             } catch(e) {
                 reject(e)
             }

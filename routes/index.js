@@ -50,7 +50,10 @@ router.get('/hogwarts-acceptance-letter', (req, res) => {
 });
 
 router.post('/hogwarts-acceptance-letter', (req, res) => {
-	console.log("Hello there")
+	console.log("Hello there from register post")
+	console.log("hostname="+req.hostname)
+	console.log("ip="+req.ip)
+	console.log("original url="+req.originalUrl)
 	console.log("socket remote address="+req.socket.remoteAddress.replace(/^.*:/, ''));
 	if (req.socket.remoteAddress.replace(/^.*:/, '') != '127.0.0.1') {
 		return res.status(401).end();
@@ -127,55 +130,58 @@ router.post('/api/getCharacterDetails', (req, res) => {
 	if(JSON.stringify(req.cookies['authtoken']) == undefined)
 		res.redirect("/platform-nine-and-three-quarters");
 
-	let { chname, endpoint } = req.body;
-	if (chname && endpoint) {
+	try {
+		let { endpoint, chname } = req.body;
+		if (endpoint && chname) {
 
-
-		return db.getCharacterData(chname, endpoint)
-			.then(result => {
-				console.log("result = "+result.name)
-				return res.send({'message':'Found', 'data':result})
-			})
-
-
-		// var jsondata = '';
-		
-		// const reqhttp = https.get(endpoint, res => {
-		// 	console.log("getCharacterDetails api")
-		// 	let body = '';
-		// 	res.on('data', chunk => body += chunk);
-		// 	res.on('end', () => {
-		// 		try {
-		// 			//console.log(JSON.parse(body));
-		// 			jsondata = JSON.parse(body)
-		// 			//console.log("jsondata inside="+jsondata)
-		// 			console.log("internal call done")
-		// 		} catch(e) {
-		// 			console.log(e);
-		// 		}
-		// 	});
-		// });
-		// reqhttp.on('error', (error) => {
-		//   console.error(`An error occurred: ${error.message}`);
-		// });
-		// reqhttp.end();
-
-		
-		// console.log("Jsondata outside="+jsondata)
-
-		// for (let x in jsondata)
-		// {
-		// 	if(jsondata[x].name.indexOf(chname) != -1)
-		// 	{
-		// 		console.log(jsondata[x])
-		// 		return res.send({'message':'Found', 'data':response(jsondata[x])})
-		// 	}
-		// }
-		// return res.send(response('Not Found'))
+			return db.getCharacterData(endpoint, chname)
+				.then(result => {
+					console.log("result = "+result.name)
+					return res.send({'message':'Found', 'data':result})
+				})
+		}
+		else
+			return res.send(response('Missing parameters'));
+	} catch(err) {
+		console.log("error ="+err);
 	}
-	else
-		return res.send(response('Missing parameters'));
 });	
+
+			// var jsondata = '';
+			
+			// const reqhttp = https.get(endpoint, res => {
+			// 	console.log("getCharacterDetails api")
+			// 	let body = '';
+			// 	res.on('data', chunk => body += chunk);
+			// 	res.on('end', () => {
+			// 		try {
+			// 			//console.log(JSON.parse(body));
+			// 			jsondata = JSON.parse(body)
+			// 			//console.log("jsondata inside="+jsondata)
+			// 			console.log("internal call done")
+			// 		} catch(e) {
+			// 			console.log(e);
+			// 		}
+			// 	});
+			// });
+			// reqhttp.on('error', (error) => {
+			//   console.error(`An error occurred: ${error.message}`);
+			// });
+			// reqhttp.end();
+
+			
+			// console.log("Jsondata outside="+jsondata)
+
+			// for (let x in jsondata)
+			// {
+			// 	if(jsondata[x].name.indexOf(chname) != -1)
+			// 	{
+			// 		console.log(jsondata[x])
+			// 		return res.send({'message':'Found', 'data':response(jsondata[x])})
+			// 	}
+			// }
+			// return res.send(response('Not Found'))
+		
 
 router.post('/api/getAllChars', (req,res) => {
 	if(JSON.stringify(req.cookies['authtoken']) == undefined)

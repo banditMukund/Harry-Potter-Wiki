@@ -114,7 +114,7 @@
 
  <script>
  	console.log("allchars button");
- 	let endpoint1 = 'https://hp-api.onrender.com/api/characters';
+ 	let endpoint1 = 'http://hp-api.onrender.com/api/characters';
 
 	document.getElementById("allchars").addEventListener("click", async function() {
 		let data = {'endpoint': endpoint1}
@@ -166,7 +166,7 @@
 	document.getElementById("searchbtn").addEventListener("click", async function() {
 		console.log("In the search script")
 		let searchtext = document.getElementById("searchtext").value;
-		let data = {'chname':searchtext, 'endpoint': endpoint}
+		let data = {'endpoint': endpoint, 'chname':searchtext}
 
 		const response = await fetch("/api/getCharacterDetails", {
 	     	method: "POST",
