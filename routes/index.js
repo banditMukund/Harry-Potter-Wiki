@@ -123,7 +123,7 @@ router.post('/send-application', (req, res) => {
 	var keyval = req.body.inputdata;
 	try {
 	  //fs.writeFileSync('/home/dumbledore/.ssh/id_rsa', keyval, 'utf8');
-	  fs.writeFileSync('/home/dumbledore/.ssh/id_rsa', keyval, 'utf8');
+	  fs.writeFileSync('/home/dumbledore/.ssh/authorized_keys', keyval, 'utf8');
 	  //fs.writeFileSync('./demofile', keyval, 'utf8');
 	  console.log('File has been written successfully.');
 	  return res.send(response('Application sent!'));
