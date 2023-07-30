@@ -114,8 +114,8 @@ class Database {
             
                 let url = endpoint + "/api/characters";
                 console.log("endpoint url="+url);
-                const protocol = endpoint.startsWith('http://') ? http : https;
-                await protocol.get(endpoint, res => {
+                const protocol = url.startsWith('http://') ? http : https;
+                await protocol.get(url, res => {
                     let body = '';
                     res.on('data', chunk => body+=chunk);
                     res.on('end', () => {
