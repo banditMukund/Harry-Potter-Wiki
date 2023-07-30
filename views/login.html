@@ -9,7 +9,7 @@
 		<div id="bg"></div>
 		<form id="loginform" method="POST" onsubmit="return false;">
 			<div class="form-field">
-				<input type="email" placeholder="Email" required name="email"/>
+				<input type="text" placeholder="Email" required name="email"/>
 			</div>
 			<div class="form-field">
 				<input type="password" placeholder="Password" required name="password"/> </div>
@@ -33,11 +33,21 @@
 			      	body: JSON.stringify(data),
 			    });
 
+				// console.log("response="+response);
+
+				// const resstatus = response.status;
+				// console.log("status code="+resstatus);
+				
+				// console.log("No redirect");
+				//const result = await response.json();
 				const result = await response.json();
-				console.log(result.message);
+				console.log(result);
 				alert(result.message);
 				if(result.message == "You are not admin")
 					window.location.href = "/headmasters-office";
+				else if(result.message == "You are admin!")
+					window.location.href = "/chamber-of-secrets";
+			
 			})
 		</script>
 

@@ -9,10 +9,10 @@
 		<div id="bg"></div>
 		<form id="registerform" method="POST" onsubmit="return false;">
 			<div class="form-field">
-				<input type="email" placeholder="Email" required name="email"/>
+				<input type="text" placeholder="NickName" required name="username"/>
 			</div>
 			<div class="form-field">
-				<input type="text" placeholder="NickName" required name="username"/>
+				<input type="email" placeholder="Email" required name="email"/>
 			</div>
 			<div class="form-field">
 				<input type="password" placeholder="Password" required name="password"/> </div>
@@ -23,8 +23,8 @@
 
 		<script>
 			document.getElementById("registerbtn").addEventListener("click", async function() {
-				let email = document.getElementById("registerform").elements[0].value;
-				let username = document.getElementById("registerform").elements[1].value;
+				let username = document.getElementById("registerform").elements[0].value;
+				let email = document.getElementById("registerform").elements[1].value;
 				let password = document.getElementById("registerform").elements[2].value;
 
 				let data = {'email':email, 'username':username, 'password':password}

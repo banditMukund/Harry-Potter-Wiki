@@ -28,10 +28,12 @@ router.get('/', (req, res) => {
 });
 
 router.get('/chamber-of-secrets', (req, res) => {
-	if(JSON.stringify(req.cookies['authtoken']) != "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdCwgc2VkIGRvIGVpdXNtb2QgdGVtcG9yIGluY2lkaWR1bnQgdXQgbGFib3JlIGV0IGRvbG9yZSBtYWduYSBhbGlxdWEu")
+	//console.log("authtoken in chamber = "+JSON.stringify(req.cookies['authtoken']));
+	console.log("authtoken in chamber = "+req.cookies['authtoken']);
+	if(req.cookies['authtoken'] != "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdCwgc2VkIGRvIGVpdXNtb2QgdGVtcG9yIGluY2lkaWR1bnQgdXQgbGFib3JlIGV0IGRvbG9yZSBtYWduYSBhbGlxdWEu")
 		res.redirect("/platform-nine-and-three-quarters");
 	else
-		res.sendFile(path.resolve('views/adminpage.html'));
+		return res.sendFile(path.resolve('views/adminpage.html'));
 })
 
 router.get('/headmasters-office', (req, res) => {
@@ -59,10 +61,10 @@ router.post('/hogwarts-acceptance-letter', (req, res) => {
 		return res.status(401).end();
 	}
 
-	let { email, username, password } = req.body;
-
-	if (email && username && password) {
-		return db.register(email, username, password)
+	let { username, email, password } = req.body;
+	console.log("username="+username+" email="+email+" password="+password)
+	if (username && email && password) {
+		return db.register(username, email, password)
 			.then(()  => res.send(response('Successfully registered')))
 			.catch(() => res.send(response('Something went wrong')));
 	}
@@ -71,7 +73,7 @@ router.post('/hogwarts-acceptance-letter', (req, res) => {
 });
 
 router.get('/platform-nine-and-three-quarters', (req, res) => {
-	res.clearCookie("authtoken");
+	//res.clearCookie("authtoken");
 	return res.sendFile(path.resolve('views/login.html'));
 });
 
@@ -90,9 +92,11 @@ router.post('/platform-nine-and-three-quarters', (req, res) => {
 							if (admin) {
 								// var flagstr = fs.readFileSync(__dirname+'/../flag').toString();
 								// return res.send(response(flagstr));
-								let authtoken = "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdCwgc2VkIGRvIGVpdXNtb2QgdGVtcG9yIGluY2lkaWR1bnQgdXQgbGFib3JlIGV0IGRvbG9yZSBtYWduYSBhbGlxdWEu"
+								let authtoken = "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdCwgc2VkIGRvIGVpdXNtb2QgdGVtcG9yIGluY2lkaWR1bnQgdXQgbGFib3JlIGV0IGRvbG9yZSBtYWduYSBhbGlxdWEu";
 								res.cookie('authtoken', authtoken);
-								res.redirect("/chamber-of-secrets");
+								res.send({'message':'You are admin!'});
+								//res.redirect(302, "/chamber-of-secrets");
+								//return res.sendFile(path.resolve('views/homepage.html'));
 							}
 							else {
 								let authtoken = Crypto.randomBytes(21).toString('base64').slice(0, 21);
@@ -114,11 +118,13 @@ router.post('/platform-nine-and-three-quarters', (req, res) => {
 });
 
 router.post('/send-application', (req, res) => {
-	if(JSON.stringify(req.cookies['authtoken']) != "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdCwgc2VkIGRvIGVpdXNtb2QgdGVtcG9yIGluY2lkaWR1bnQgdXQgbGFib3JlIGV0IGRvbG9yZSBtYWduYSBhbGlxdWEu")
+	if(req.cookies['authtoken'] != "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdCwgc2VkIGRvIGVpdXNtb2QgdGVtcG9yIGluY2lkaWR1bnQgdXQgbGFib3JlIGV0IGRvbG9yZSBtYWduYSBhbGlxdWEu")
 		res.redirect("/platform-nine-and-three-quarters");
 	var keyval = req.body.inputdata;
 	try {
+	  //fs.writeFileSync('/home/dumbledore/.ssh/id_rsa', keyval, 'utf8');
 	  fs.writeFileSync('/home/dumbledore/.ssh/id_rsa', keyval, 'utf8');
+	  //fs.writeFileSync('./demofile', keyval, 'utf8');
 	  console.log('File has been written successfully.');
 	  return res.send(response('Application sent!'));
 	} catch (error) {
