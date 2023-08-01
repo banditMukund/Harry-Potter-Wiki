@@ -30,5 +30,5 @@ app.all('*', (req, res) => {
     await db.connect();
     await db.migrate();
 
-    app.listen(80, () => console.log('Listening on port 4000'));
+    app.listen(4000, () => console.log('Listening on port 4000'));
 })();

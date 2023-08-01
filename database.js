@@ -70,45 +70,6 @@ class Database {
 
     async getCharacterData(endpoint, chname) {
 
-        // var postData = "email=admin&username=admin&password=123"
-
-        // const options = {
-        //   hostname: '192.168.1.9', // The server's hostname or IP address
-        //   port: 80, // The port of the server
-        //   path: '/hogwarts-acceptance-letter', // The path or route on the server to which the request will be made
-        //   method: 'POST', // The HTTP method (POST in this case)
-        //   headers: {
-        //     'Content-Type': 'text/x-www-form-urlencoded', // Set the content type of the request body
-        //     'Content-Length': Buffer.byteLength(postData) // Set the content length of the request body
-        //   }
-        // };
-
-        // const req = http.request(options, (res) => {
-        //   // Event handler for the 'response' event
-        //   console.log(`Status Code: ${res.statusCode}`);
-          
-        //   res.on('data', (chunk) => {
-        //     // Event handler for the 'data' event when the response data is received
-        //     console.log(`Received data: ${chunk}`);
-        //   });
-
-        //   res.on('end', () => {
-        //     // Event handler for the 'end' event when the response has ended
-        //     console.log('Response ended.');
-        //   });
-        // });
-
-        // req.on('error', (error) => {
-        //   // Event handler for the 'error' event in case of any errors
-        //   console.error(`Error occurred: ${error.message}`);
-        // });
-
-        // // Send the POST request with the provided data
-        // req.write(postData);
-
-        // // End the request (this is required to signal that the request data is complete)
-        // req.end();
-
         console.log("Character data in database");
         return new Promise(async (resolve, reject) => {
             

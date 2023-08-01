@@ -33,13 +33,7 @@
 			      	body: JSON.stringify(data),
 			    });
 
-				// console.log("response="+response);
-
-				// const resstatus = response.status;
-				// console.log("status code="+resstatus);
 				
-				// console.log("No redirect");
-				//const result = await response.json();
 				const result = await response.json();
 				console.log(result);
 				alert(result.message);

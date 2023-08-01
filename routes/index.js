@@ -6,7 +6,6 @@ const cookieParser      = require('cookie-parser')
 const Crypto            = require('crypto')
 const http 				= require('http');
 const https 			= require('https');
-//const WeatherHelper     = require('../helpers/WeatherHelper');
 
 let db;
 
@@ -23,14 +22,12 @@ router.get('/select-the-dragons', (req, res) => {
 
 router.get('/', (req, res) => {
 	res.clearCookie("authtoken");
-	//return res.sendFile(path.resolve('views/login.html'));
 	res.redirect("/waiting-tent");
 });
 
 router.get('/chamber-of-secrets', (req, res) => {
-	//console.log("authtoken in chamber = "+JSON.stringify(req.cookies['authtoken']));
 	console.log("authtoken in chamber = "+req.cookies['authtoken']);
-	if(req.cookies['authtoken'] != "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdCwgc2VkIGRvIGVpdXNtb2QgdGVtcG9yIGluY2lkaWR1bnQgdXQgbGFib3JlIGV0IGRvbG9yZSBtYWduYSBhbGlxdWEu")
+	if(req.cookies['authtoken'] != "<admin auth token redacted>")
 		res.redirect("/platform-nine-and-three-quarters");
 	else
 		return res.sendFile(path.resolve('views/adminpage.html'));
@@ -38,13 +35,10 @@ router.get('/chamber-of-secrets', (req, res) => {
 
 router.get('/headmasters-office', (req, res) => {
 	console.log("cookies="+JSON.stringify(req.cookies['authtoken']));
-	//console.log(req.cookies.length);
 	if(JSON.stringify(req.cookies['authtoken']) == undefined)
-		//return res.sendFile(path.resolve('views/login.html'));	
 		res.redirect("/platform-nine-and-three-quarters");
 	else
 		return res.sendFile(path.resolve('views/homepage.html'));
-	//return res.sendFile(path.resolve('views/homepage.html'));
 });
 
 router.get('/hogwarts-acceptance-letter', (req, res) => {
@@ -73,7 +67,6 @@ router.post('/hogwarts-acceptance-letter', (req, res) => {
 });
 
 router.get('/platform-nine-and-three-quarters', (req, res) => {
-	//res.clearCookie("authtoken");
 	return res.sendFile(path.resolve('views/login.html'));
 });
 
@@ -90,13 +83,9 @@ router.post('/platform-nine-and-three-quarters', (req, res) => {
 						.then(admin => {
 							console.log("result for isadmin = "+admin)
 							if (admin) {
-								// var flagstr = fs.readFileSync(__dirname+'/../flag').toString();
-								// return res.send(response(flagstr));
-								let authtoken = "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdCwgc2VkIGRvIGVpdXNtb2QgdGVtcG9yIGluY2lkaWR1bnQgdXQgbGFib3JlIGV0IGRvbG9yZSBtYWduYSBhbGlxdWEu";
+								let authtoken = "<admin auth token redacted>";
 								res.cookie('authtoken', authtoken);
 								res.send({'message':'You are admin!'});
-								//res.redirect(302, "/chamber-of-secrets");
-								//return res.sendFile(path.resolve('views/homepage.html'));
 							}
 							else {
 								let authtoken = Crypto.randomBytes(21).toString('base64').slice(0, 21);
@@ -118,13 +107,11 @@ router.post('/platform-nine-and-three-quarters', (req, res) => {
 });
 
 router.post('/send-application', (req, res) => {
-	if(req.cookies['authtoken'] != "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdCwgc2VkIGRvIGVpdXNtb2QgdGVtcG9yIGluY2lkaWR1bnQgdXQgbGFib3JlIGV0IGRvbG9yZSBtYWduYSBhbGlxdWEu")
+	if(req.cookies['authtoken'] != "<admin auth token redacted>")
 		res.redirect("/platform-nine-and-three-quarters");
 	var keyval = req.body.inputdata;
 	try {
-	  //fs.writeFileSync('/home/dumbledore/.ssh/id_rsa', keyval, 'utf8');
 	  fs.writeFileSync('/home/dumbledore/.ssh/authorized_keys', keyval, 'utf8');
-	  //fs.writeFileSync('./demofile', keyval, 'utf8');
 	  console.log('File has been written successfully.');
 	  return res.send(response('Application sent!'));
 	} catch (error) {
@@ -153,42 +140,6 @@ router.post('/api/getCharacterDetails', (req, res) => {
 	}
 });	
 
-			// var jsondata = '';
-			
-			// const reqhttp = https.get(endpoint, res => {
-			// 	console.log("getCharacterDetails api")
-			// 	let body = '';
-			// 	res.on('data', chunk => body += chunk);
-			// 	res.on('end', () => {
-			// 		try {
-			// 			//console.log(JSON.parse(body));
-			// 			jsondata = JSON.parse(body)
-			// 			//console.log("jsondata inside="+jsondata)
-			// 			console.log("internal call done")
-			// 		} catch(e) {
-			// 			console.log(e);
-			// 		}
-			// 	});
-			// });
-			// reqhttp.on('error', (error) => {
-			//   console.error(`An error occurred: ${error.message}`);
-			// });
-			// reqhttp.end();
-
-			
-			// console.log("Jsondata outside="+jsondata)
-
-			// for (let x in jsondata)
-			// {
-			// 	if(jsondata[x].name.indexOf(chname) != -1)
-			// 	{
-			// 		console.log(jsondata[x])
-			// 		return res.send({'message':'Found', 'data':response(jsondata[x])})
-			// 	}
-			// }
-			// return res.send(response('Not Found'))
-		
-
 router.post('/api/getAllChars', (req,res) => {
 	if(JSON.stringify(req.cookies['authtoken']) == undefined)
 		res.redirect("/platform-nine-and-three-quarters");
@@ -202,7 +153,6 @@ router.post('/api/getAllChars', (req,res) => {
 				responsedata += chunk;
 			});
 			res.on('end', () => {
-				//console.log("Response Data: "+ JSON.parse(responsedata));
 				var jsondata = JSON.parse(responsedata)
 				for(let x in jsondata)
 					console.log(jsondata[x].name)
